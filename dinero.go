@@ -128,6 +128,20 @@ func (c *Client) Call(method, path string, body io.Reader, o interface{}) error 
 	return json.Unmarshal(bytes, o)
 }
 
+// BuildFieldsQuery returns the field query part of the url
+func BuildFieldsQuery(fieldQuery ...string) string {
+	var query string
+	for i, field := range fieldQuery {
+		if i == 0 {
+			query = field
+		} else {
+			query = fmt.Sprintf("%v,%v", query, field)
+		}
+	}
+
+	return query
+}
+
 // NewClient prepares a struct that will be used to communicate with
 // Dinero's api
 func NewClient(clientKey string, clientSecret string) *Client {
