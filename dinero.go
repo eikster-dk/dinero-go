@@ -92,7 +92,7 @@ func (c *Client) Authorize(apiKey string, organizationID int) error {
 
 // Call is a raw method to interact with the dinero API
 // it alters the path to adjust the {organizationID} with the correct organizationID
-// it combines your path with the base path and adds the authoirzation header
+// it combines your path with the base path and adds the authorization header
 // ships it off and unmarshals the request into the o param
 // todo: make better error handling
 func (c *Client) Call(method, path string, body io.Reader, o interface{}) error {
