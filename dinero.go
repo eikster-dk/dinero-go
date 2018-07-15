@@ -25,12 +25,13 @@ type API interface {
 // Client is a wrapper of the httpCLient with all the needed goodies
 // that dinero needs
 type Client struct {
-	clientKey    string
-	clientSecret string
-	userAgent    string
-	baseURL      *url.URL
-	token        string
-	httpClient   *http.Client
+	clientKey      string
+	clientSecret   string
+	userAgent      string
+	baseURL        *url.URL
+	token          string
+	organizationID int
+	httpClient     *http.Client
 }
 
 type authorizedResp struct {
@@ -44,7 +45,7 @@ type authorizedResp struct {
 // by preparing the clientKey:clientSecret in base64
 // send it off to dinero's auth endpoint to receive a
 // token that can be used to interact with the api
-func (c *Client) Authorize(apiKey string) error {
+func (c *Client) Authorize(apiKey string, organizationID int) error {
 	encoded := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%v:%v", c.clientKey, c.clientSecret)))
 	data := url.Values{}
 	data.Add("grant_type", "password")
@@ -64,6 +65,7 @@ func (c *Client) Authorize(apiKey string) error {
 	if err != nil {
 		return err
 	}
+
 	if resp.StatusCode != http.StatusOK {
 		return errors.New(resp.Status)
 	}
@@ -76,6 +78,7 @@ func (c *Client) Authorize(apiKey string) error {
 	}
 
 	c.token = authResp.Token
+	c.organizationID = organizationID
 
 	return nil
 }
