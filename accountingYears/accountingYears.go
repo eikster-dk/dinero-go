@@ -3,7 +3,7 @@ package accountingYears
 import (
 	"net/http"
 
-	dinero "github.com/eikc/dinero-go"
+	"github.com/eikc/dinero-go"
 )
 
 // AccountingYear represent the model from the dinero accounting year API
