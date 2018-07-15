@@ -1,6 +1,9 @@
 package contacts
 
 import (
+	"net/http"
+	"net/url"
+	"strconv"
 	"time"
 
 	"github.com/eikc/dinero-go"
@@ -57,20 +60,6 @@ type Contact struct {
 }
 
 // ListParams are parameter options for getting a list of contacts
-// Fields: A comma separated list of fields to include in the response.
-// Possible values are Name, ContactGuid, ExternalReference, IsPerson, Street, Zipcode, City, CountryKey, Phone, Email,
-// Webpage, AttPerson, VatNumber, EanNumber, PaymentConditionType, PaymentConditionNumberOfDays, CreatedAt, UpdatedAt and DeletedAt.
-// Notice that it's not case sensitive, the property name will be returned the way you request it.
-// If left empty it defaults to name and contactGuid (notice small start letter).
-// QueryFilter: Filter specific for contacts. Filtering can be applied to following fields:
-// ExternalReference,Name, Email, VatNumber, EanNumber, IsPerson. See API documentation for filtering format.
-// If left empty no filtering is applied.
-// ChangeSince: [Generic Filter Option] Only return contacts that was created, deleted or updated at or after given time.
-// If left empty, this filter will not be applied, and contacts will be returned regardless of change history.
-// The time must be UTC and in the format 'YYYY-MM-DDTHH:mm:ssZ' example: '2015-08-18T06:36:22Z'.
-// DeletedOnly: [Generic Filter Option] Only select deleted contacts. If left empty, will default to false.
-// Page: The 0-based page number
-// PageSize: The maximum number of items to include in a page. Maximum 1000.
 // See more: https://api.dinero.dk/v1/docs/Api/GET-v1-organizationId-contacts_fields_queryFilter_changesSince_deletedOnly_page_pageSize
 type ListParams struct {
 	Fields      []string
@@ -87,8 +76,39 @@ func Restore(api dinero.API) {
 
 // List retrieves a list of contacts for the organization order by UpdatedAt
 // If fields are not specified then it defaults to name,contactGuid
-func List(api dinero.API, params ListParams) {
+func List(api dinero.API, params ListParams) ([]Contact, error) {
+	route := "v1/{organizationId}/contacts"
+	url := url.URL{}
+	q := url.Query()
 
+	if params.Fields != nil {
+		fields := dinero.BuildFieldsQuery(params.Fields...)
+		q.Add("fields", fields)
+	}
+
+	if params.QueryFilter != nil {
+		filter := dinero.BuildFieldsQuery(params.QueryFilter...)
+		q.Add("queryFilter", filter)
+	}
+
+	var defaultTime time.Time
+	if params.ChangeSince != defaultTime {
+		q.Add("changesSince", params.ChangeSince.Format(time.RFC3339))
+	}
+
+	q.Add("deletedOnly", strconv.FormatBool(params.DeletedOnly))
+	q.Add("page", strconv.FormatInt(int64(params.Page), 10))
+	q.Add("pageSize", strconv.FormatInt(int64(params.PageSize), 10))
+
+	encodedQueryString := q.Encode()
+	route = route + encodedQueryString
+
+	var contacts []Contact
+	if err := api.Call(http.MethodGet, route, nil, &contacts); err != nil {
+		return nil, err
+	}
+
+	return contacts, nil
 }
 
 // Get retrieves contact information for the contact with the given id
