@@ -73,10 +73,14 @@ func (c *Client) Authorize(apiKey string, organizationID int) error {
 		return errors.New(resp.Status)
 	}
 
-	decoder := json.NewDecoder(resp.Body)
+	defer resp.Body.Close()
+	bytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
 
 	var authResp authorizedResp
-	if err = decoder.Decode(&authResp); err != nil {
+	if err = json.Unmarshal(bytes, &authResp); err != nil {
 		return err
 	}
 
