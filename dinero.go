@@ -107,6 +107,10 @@ func (c *Client) Call(method, path string, body io.Reader, o interface{}) error 
 		return err
 	}
 
+	if resp.StatusCode != http.StatusOK {
+		return errors.New("something wen't wrong, todo: fix this message and what is returned")
+	}
+
 	defer resp.Body.Close()
 
 	bytes, err := ioutil.ReadAll(resp.Body)
