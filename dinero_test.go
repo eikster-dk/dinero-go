@@ -30,6 +30,11 @@ func TestClient_Authorize_integration(t *testing.T) {
 	if c.token == defaultString {
 		t.Errorf("The client did not set the token correctly")
 	}
+
+	var defaultInt int
+	if c.organizationID == defaultInt {
+		t.Errorf("The client did not set the organizationID correctly")
+	}
 }
 
 func TestNewClient(t *testing.T) {
