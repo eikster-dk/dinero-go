@@ -7,17 +7,17 @@ import (
 	"github.com/eikc/dinero-go"
 )
 
-// Deposit represents a deposit in dinero regnskab
-type Deposit struct {
-	Number int    `json:"AccountName"`
-	Name   string `json:"Name"`
-}
-
 // Params for filtering what is returned for both deposits and accounts
 const (
 	Name   = "Name"
 	Number = "AccountNumber"
 )
+
+// Deposit represents a deposit in dinero regnskab
+type Deposit struct {
+	Number int    `json:"AccountName"`
+	Name   string `json:"Name"`
+}
 
 // Account represents an account in dinero regnskab
 type Account struct {
