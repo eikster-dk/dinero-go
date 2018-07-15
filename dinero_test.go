@@ -1,9 +1,9 @@
 package dinero
 
 import (
-	"os"
-	"strconv"
 	"testing"
+
+	"github.com/eikc/dinero-go/dinerotest"
 )
 
 func TestClient_Call(t *testing.T) {
@@ -11,17 +11,14 @@ func TestClient_Call(t *testing.T) {
 
 func TestClient_Authorize_integration(t *testing.T) {
 	if testing.Short() {
-		t.Skip("using -short")
+		t.Skip(dinerotest.IntegrationTestText)
 	}
 
-	key := os.Getenv("CLIENTKEY")
-	secret := os.Getenv("CLIENTSECRET")
-	apiKey := os.Getenv("CLIENTAPIKEY")
-	organizationID, _ := strconv.ParseInt(os.Getenv("CLIENTORGANIZATIONID"), 10, 64)
+	key, secret, apiKey, organizationID := dinerotest.GetClientKeysForIntegrationTesting()
 
 	c := NewClient(key, secret)
 
-	err := c.Authorize(apiKey, int(organizationID))
+	err := c.Authorize(apiKey, organizationID)
 	if err != nil {
 		t.Errorf("Error occured when trying to talk to dinero auth api: %v", err)
 	}
