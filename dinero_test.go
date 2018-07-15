@@ -65,3 +65,24 @@ func TestNewClient(t *testing.T) {
 		})
 	}
 }
+
+func TestBuildFieldsQuery(t *testing.T) {
+	type args struct {
+		fieldQuery []string
+	}
+	tests := []struct {
+		name string
+		args args
+		want string
+	}{
+		{"Query will add all fields", args{[]string{"test", "test2", "test3"}}, "test,test2,test3"},
+		{"Query will add one field with no comma at the send", args{[]string{"test"}}, "test"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := BuildFieldsQuery(tt.args.fieldQuery...); got != tt.want {
+				t.Errorf("BuildFieldsQuery() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
