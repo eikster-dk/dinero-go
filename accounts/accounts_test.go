@@ -19,9 +19,21 @@ func Test_getRouteWithFields(t *testing.T) {
 		args args
 		want string
 	}{
-		{"Test route for accounts with nil fields", args{"v1/{organizationId}/accounts/entry", nil}, "v1/{organizationId}/accounts/entry"},
-		{"test routes for account with name field", args{"v1/{organizationId}/accounts/entry", []string{Name}}, "v1/{organizationId}/accounts/entry?fields=Name"},
-		{"test routes for account with name and number field", args{"v1/{organizationId}/accounts/entry", []string{Name, Number}}, "v1/{organizationId}/accounts/entry?fields=Name,AccountNumber"},
+		{
+			"Test route for accounts with nil fields",
+			args{"v1/{organizationId}/accounts/entry", nil},
+			"v1/{organizationId}/accounts/entry",
+		},
+		{
+			"test routes for account with name field",
+			args{"v1/{organizationId}/accounts/entry", []string{Name}},
+			"v1/{organizationId}/accounts/entry?fields=Name",
+		},
+		{
+			"test routes for account with name and number field",
+			args{"v1/{organizationId}/accounts/entry", []string{Name, Number}},
+			"v1/{organizationId}/accounts/entry?fields=Name,AccountNumber",
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

@@ -75,8 +75,16 @@ func TestBuildFieldsQuery(t *testing.T) {
 		args args
 		want string
 	}{
-		{"Query will add all fields", args{[]string{"test", "test2", "test3"}}, "test,test2,test3"},
-		{"Query will add one field with no comma at the send", args{[]string{"test"}}, "test"},
+		{
+			"Query will add all fields",
+			args{[]string{"test", "test2", "test3"}},
+			"test,test2,test3",
+		},
+		{
+			"Query will add one field with no comma at the send",
+			args{[]string{"test"}},
+			"test",
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
