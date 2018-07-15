@@ -5,8 +5,11 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
+	"io/ioutil"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 )
 
@@ -28,7 +31,7 @@ type Client struct {
 	clientKey      string
 	clientSecret   string
 	userAgent      string
-	baseURL        *url.URL
+	baseURL        string
 	token          string
 	organizationID int
 	httpClient     *http.Client
@@ -83,9 +86,38 @@ func (c *Client) Authorize(apiKey string, organizationID int) error {
 	return nil
 }
 
-// Call is..
-func (c *Client) Call(method, path string, v interface{}) error {
-	return nil
+// Call is a raw method to interact with the dinero API
+// it alters the path to adjust the {organizationID} with the correct organizationID
+// it combines your path with the base path and adds the authoirzation header
+// ships it off and unmarshals the request into the o param
+// todo: make better error handling
+func (c *Client) Call(method, path string, body io.Reader, o interface{}) error {
+	path = strings.Replace(path, "{organizationID}", strconv.Itoa(c.organizationID), 1)
+	if !strings.HasPrefix(path, "/") {
+		path = "/" + path
+	}
+
+	path = c.baseURL + path
+
+	req, _ := http.NewRequest(method, path, body)
+	req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", c.token))
+
+	resp, err := c.httpClient.Do(req)
+	if err != nil {
+		return err
+	}
+
+	defer resp.Body.Close()
+
+	bytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+
+	b := string(bytes)
+	fmt.Println(b)
+
+	return json.Unmarshal(bytes, o)
 }
 
 // NewClient prepares a struct that will be used to communicate with
@@ -95,7 +127,7 @@ func NewClient(clientKey string, clientSecret string) *Client {
 		clientKey:    clientKey,
 		clientSecret: clientSecret,
 		userAgent:    "dinero-go",
-		baseURL:      &url.URL{Path: defaultAPIEndpoint},
+		baseURL:      defaultAPIEndpoint,
 		httpClient:   &http.Client{},
 	}
 
