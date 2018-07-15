@@ -1,10 +1,35 @@
 package dinero
 
 import (
+	"os"
+	"strconv"
 	"testing"
 )
 
 func TestClient_Call(t *testing.T) {
+}
+
+func TestClient_Authorize_integration(t *testing.T) {
+	if testing.Short() {
+		t.Skip("using -short")
+	}
+
+	key := os.Getenv("CLIENTKEY")
+	secret := os.Getenv("CLIENTSECRET")
+	apiKey := os.Getenv("CLIENTAPIKEY")
+	organizationID, _ := strconv.ParseInt(os.Getenv("CLIENTORGANIZATIONID"), 10, 64)
+
+	c := NewClient(key, secret)
+
+	err := c.Authorize(apiKey, int(organizationID))
+	if err != nil {
+		t.Errorf("Error occured when trying to talk to dinero auth api: %v", err)
+	}
+
+	var defaultString string
+	if c.token == defaultString {
+		t.Errorf("The client did not set the token correctly")
+	}
 }
 
 func TestNewClient(t *testing.T) {
