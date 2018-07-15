@@ -18,8 +18,8 @@ const (
 // API is an interface
 // that wraps the needed methods for communicating with dinero's api
 type API interface {
-	Authorize(apiKey string) error
-	Call(method, path string, v interface{}) error
+	Authorize(apiKey string, organizationID int) error
+	Call(method, path string, b io.Reader, o interface{}) error
 }
 
 // Client is a wrapper of the httpCLient with all the needed goodies
