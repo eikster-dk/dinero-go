@@ -78,8 +78,7 @@ func Restore(api dinero.API) {
 // If fields are not specified then it defaults to name,contactGuid
 func List(api dinero.API, params ListParams) ([]Contact, error) {
 	route := "v1/{organizationId}/contacts"
-	url := url.URL{}
-	q := url.Query()
+	q := url.Values{}
 
 	if params.Fields != nil {
 		fields := dinero.BuildFieldsQuery(params.Fields...)
