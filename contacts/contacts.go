@@ -1,6 +1,7 @@
 package contacts
 
 import (
+	"fmt"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -59,6 +60,12 @@ type Contact struct {
 	IsPerson                     bool      `json:"IsPerson"`
 }
 
+// ContactList returns the paginated result of the contacts
+type ContactList struct {
+	Collection []Contact               `json:"Collection"`
+	Pagination dinero.PaginationResult `json:"Pagination"`
+}
+
 // ListParams are parameter options for getting a list of contacts
 // See more: https://api.dinero.dk/v1/docs/Api/GET-v1-organizationId-contacts_fields_queryFilter_changesSince_deletedOnly_page_pageSize
 type ListParams struct {
@@ -76,8 +83,8 @@ func Restore(api dinero.API) {
 
 // List retrieves a list of contacts for the organization order by UpdatedAt
 // If fields are not specified then it defaults to name,contactGuid
-func List(api dinero.API, params ListParams) ([]Contact, error) {
-	route := "v1/{organizationId}/contacts"
+func List(api dinero.API, params ListParams) (*ContactList, error) {
+	route := "v1/{organizationID}/contacts"
 	q := url.Values{}
 
 	if params.Fields != nil {
@@ -100,14 +107,14 @@ func List(api dinero.API, params ListParams) ([]Contact, error) {
 	q.Add("pageSize", strconv.FormatInt(int64(params.PageSize), 10))
 
 	encodedQueryString := q.Encode()
-	route = route + encodedQueryString
+	route = fmt.Sprintf("%v?%v", route, encodedQueryString)
 
-	var contacts []Contact
+	var contacts ContactList
 	if err := api.Call(http.MethodGet, route, nil, &contacts); err != nil {
 		return nil, err
 	}
 
-	return contacts, nil
+	return &contacts, nil
 }
 
 // Get retrieves contact information for the contact with the given id
