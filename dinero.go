@@ -44,6 +44,15 @@ type authorizedResp struct {
 	RefreshToken string `json:"refresh_token"`
 }
 
+// PaginationResult is general information about a given list and how it's paginated
+type PaginationResult struct {
+	MaxPageSizeAllowed  int
+	PageSize            int
+	Result              int
+	ResultWithoutFilter int
+	Page                int
+}
+
 // Authorize will authorize the client
 // by preparing the clientKey:clientSecret in base64
 // send it off to dinero's auth endpoint to receive a
