@@ -49,7 +49,7 @@ func TestGetContact_integration(t *testing.T) {
 	}
 }
 
-func TestAddContact_integration(t *testing.T) {
+func TestAddPrivateContact_integration(t *testing.T) {
 	if testing.Short() {
 		t.Skip(dinerotest.IntegrationTestText)
 	}
@@ -60,9 +60,21 @@ func TestAddContact_integration(t *testing.T) {
 	c.Authorize(apiKey, organizationID)
 
 	params := CreateContactParams{
-		Name:       "Hello awesome",
-		CountryKey: "DK",
-		IsPerson:   true,
+		Name:                         "Hello awesome",
+		ExternalReference:            "external",
+		AttPerson:                    "",
+		City:                         "city",
+		EanNumber:                    "",
+		Email:                        "test@test.dk",
+		PaymentConditionType:         Netto,
+		Phone:                        "88 88 88 88",
+		Street:                       "street",
+		VatNumber:                    "",
+		Webpage:                      "http://awesome.dk",
+		ZipCode:                      "2700",
+		CountryKey:                   "DK",
+		IsPerson:                     true,
+		PaymentConditionNumberOfDays: 10,
 	}
 	_, err := Add(c, params)
 
