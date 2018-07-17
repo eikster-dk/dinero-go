@@ -48,16 +48,16 @@ type Contact struct {
 	Street                       string      `json:"Street,omitempty"`
 	ZipCode                      string      `json:"ZipCode,omitempty"`
 	City                         string      `json:"City,omitempty"`
-	CountryKey                   string      `json:"CountryKey"`
-	Phone                        string      `json:"Phone"`
-	Email                        string      `json:"Email"`
-	Webpage                      string      `json:"Webpage"`
-	AttPerson                    string      `json:"AttPerson"`
-	VatNumber                    string      `json:"VatNumber"`
-	EanNumber                    string      `json:"EanNumber"`
-	PaymentConditionType         string      `json:"PaymentConditionType"`
-	PaymentConditionNumberOfDays int         `json:"PaymentConditionNumberOfDays"`
-	IsPerson                     bool        `json:"IsPerson"`
+	CountryKey                   string      `json:"CountryKey,omitempty"`
+	Phone                        string      `json:"Phone,omitempty"`
+	Email                        string      `json:"Email,omitempty"`
+	Webpage                      string      `json:"Webpage,omitempty"`
+	AttPerson                    string      `json:"AttPerson,omitempty"`
+	VatNumber                    string      `json:"VatNumber,omitempty"`
+	EanNumber                    string      `json:"EanNumber,omitempty"`
+	PaymentConditionType         string      `json:"PaymentConditionType,omitempty"`
+	PaymentConditionNumberOfDays int         `json:"PaymentConditionNumberOfDays,omitempty"`
+	IsPerson                     bool        `json:"IsPerson,omitempty"`
 }
 
 // ContactList returns the paginated result of the contacts
