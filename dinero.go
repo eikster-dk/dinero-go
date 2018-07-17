@@ -146,13 +146,14 @@ func (c *Client) Call(method, path string, body io.Reader, o interface{}) error 
 
 	req, _ := http.NewRequest(method, path, body)
 	req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", c.token))
+	req.Header.Add("Content-Type", "application/json")
 
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
 		return err
 	}
 
-	if resp.StatusCode != http.StatusOK {
+	if resp.StatusCode > http.StatusCreated {
 		return errors.New("something wen't wrong, todo: fix this message and what is returned")
 	}
 
