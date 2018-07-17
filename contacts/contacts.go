@@ -1,6 +1,8 @@
 package contacts
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -129,8 +131,53 @@ func Get(c dinero.API, ID string) (*Contact, error) {
 	return &contact, nil
 }
 
+// Payment terms
+const (
+	Netto           = "Netto"
+	NettoCash       = "NettoCash"
+	CurrentMonthOut = "CurrentMonthNettoOut"
+)
+
+// CreateContactParams is the parameters you provide to create a contact in dinero's api
+type CreateContactParams struct {
+	ExternalReference            string `json:"externalReference,omitempty"`
+	Name                         string `json:"name,omitempty"`
+	Street                       string `json:"street,omitempty"`
+	ZipCode                      string `json:"zipcode,omitempty"`
+	City                         string `json:"city,omitempty"`
+	CountryKey                   string `json:"countryKey,omitempty"`
+	Phone                        string `json:"phone,omitempty"`
+	Email                        string `json:"email,omitempty"`
+	Webpage                      string `json:"webpage,omitempty"`
+	AttPerson                    string `json:"attPerson,omitempty"`
+	VatNumber                    string `json:"vatNumber,omitempty"`
+	EanNumber                    string `json:"eanNumber,omitempty"`
+	PaymentConditionType         string `json:"paymentConditionType,omitempty"`
+	PaymentConditionNumberOfDays int    `json:"paymentConditionNumberOfDays,omitempty"`
+	IsPerson                     bool   `json:"isPerson,omitempty"`
+}
+
+// ContactCreated is the returned type when a contact is created successfully
+type ContactCreated struct {
+	ID string `json:"ContactGUID"`
+}
+
 // Add a new contact to the organization
-func Add() {
+func Add(api dinero.API, params CreateContactParams) (*ContactCreated, error) {
+	route := "v1/{organizationID}/contacts"
+	b, err := json.Marshal(params)
+	if err != nil {
+		return nil, err
+	}
+
+	bodyReader := bytes.NewReader(b)
+
+	var created ContactCreated
+	if err = api.Call(http.MethodPost, route, bodyReader, &created); err != nil {
+		return nil, err
+	}
+
+	return &created, nil
 }
 
 // Update an existing contact
