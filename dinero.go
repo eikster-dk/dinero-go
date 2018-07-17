@@ -154,7 +154,8 @@ func (c *Client) Call(method, path string, body io.Reader, o interface{}) error 
 	}
 
 	if resp.StatusCode > http.StatusCreated {
-		return errors.New("something wen't wrong, todo: fix this message and what is returned")
+		sBytes, _ := ioutil.ReadAll(resp.Body)
+		return errors.New(string(sBytes))
 	}
 
 	defer resp.Body.Close()
