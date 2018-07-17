@@ -48,3 +48,25 @@ func TestGetContact_integration(t *testing.T) {
 		t.Errorf("Failed getting contact by ID: %v", err)
 	}
 }
+
+func TestAddContact_integration(t *testing.T) {
+	if testing.Short() {
+		t.Skip(dinerotest.IntegrationTestText)
+	}
+
+	key, secret, apiKey, organizationID := dinerotest.GetClientKeysForIntegrationTesting()
+
+	c := dinero.NewClient(key, secret)
+	c.Authorize(apiKey, organizationID)
+
+	params := CreateContactParams{
+		Name:       "Hello awesome",
+		CountryKey: "DK",
+		IsPerson:   true,
+	}
+	_, err := Add(c, params)
+
+	if err != nil {
+		t.Errorf("We can not create a contact: %v", err)
+	}
+}
