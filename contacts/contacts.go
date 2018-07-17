@@ -1,8 +1,6 @@
 package contacts
 
 import (
-	"bytes"
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -165,15 +163,9 @@ type ContactCreated struct {
 // Add a new contact to the organization
 func Add(api dinero.API, params CreateContactParams) (*ContactCreated, error) {
 	route := "v1/{organizationID}/contacts"
-	b, err := json.Marshal(params)
-	if err != nil {
-		return nil, err
-	}
-
-	bodyReader := bytes.NewReader(b)
 
 	var created ContactCreated
-	if err = api.Call(http.MethodPost, route, bodyReader, &created); err != nil {
+	if err := api.Call(http.MethodPost, route, &params, &created); err != nil {
 		return nil, err
 	}
 
