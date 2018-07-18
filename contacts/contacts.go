@@ -78,7 +78,10 @@ type ListParams struct {
 }
 
 // Restore a deleted contact from the given organization
-func Restore(api dinero.API) {
+func Restore(api dinero.API, ID string) error {
+	route := fmt.Sprintf("v1/{organizationID}/contacts/%v/restore", ID)
+
+	return api.Call(http.MethodPost, route, nil, nil)
 }
 
 // List retrieves a list of contacts for the organization order by UpdatedAt
