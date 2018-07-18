@@ -1,6 +1,7 @@
 package dinero
 
 import (
+	"bytes"
 	"encoding/base64"
 	"encoding/json"
 	"errors"
@@ -11,6 +12,7 @@ import (
 	"net/url"
 	"strconv"
 	"strings"
+	"time"
 )
 
 const (
@@ -22,7 +24,7 @@ const (
 // that wraps the needed methods for communicating with dinero's api
 type API interface {
 	Authorize(apiKey string, organizationID int) error
-	Call(method, path string, b io.Reader, o interface{}) error
+	Call(method, path string, b interface{}, o interface{}) error
 }
 
 // Client is a wrapper of the httpCLient with all the needed goodies
@@ -42,6 +44,46 @@ type authorizedResp struct {
 	Type         string `json:"token_type"`
 	Expires      int    `json:"expires_in"`
 	RefreshToken string `json:"refresh_token"`
+}
+
+// PaginationResult is general information about a given list and how it's paginated
+type PaginationResult struct {
+	MaxPageSizeAllowed  int
+	PageSize            int
+	Result              int
+	ResultWithoutFilter int
+	Page                int
+}
+
+// Time is a wrapper for time to make sure the
+// JSON returned from dinero is correctly parsed
+type Time struct {
+	time.Time
+}
+
+const dineroLayout = "2006-01-02T15:04:05.000"
+
+// UnmarshalJSON is Helper function to parse the Timestamp from dinero
+func (dt *Time) UnmarshalJSON(b []byte) error {
+	s := strings.Trim(string(b), "\"")
+	if s == "null" {
+		dt.Time = time.Time{}
+		return nil
+	}
+
+	t, err := time.Parse(dineroLayout, s)
+	if err != nil {
+		return err
+	}
+
+	dt.Time = t
+
+	return nil
+}
+
+// MarshalJSON is Helper function to format a dinero timestamp
+func (dt *Time) MarshalJSON() ([]byte, error) {
+	return []byte(dt.Time.Format(dineroLayout)), nil
 }
 
 // Authorize will authorize the client
@@ -95,7 +137,7 @@ func (c *Client) Authorize(apiKey string, organizationID int) error {
 // it combines your path with the base path and adds the authorization header
 // ships it off and unmarshals the request into the o param
 // todo: make better error handling
-func (c *Client) Call(method, path string, body io.Reader, o interface{}) error {
+func (c *Client) Call(method, path string, body interface{}, o interface{}) error {
 	path = strings.Replace(path, "{organizationID}", strconv.Itoa(c.organizationID), 1)
 	if !strings.HasPrefix(path, "/") {
 		path = "/" + path
@@ -103,29 +145,46 @@ func (c *Client) Call(method, path string, body io.Reader, o interface{}) error 
 
 	path = c.baseURL + path
 
-	req, _ := http.NewRequest(method, path, body)
-	req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", c.token))
+	var reader io.Reader
+	if body != nil {
+		b, err := json.Marshal(body)
+		if err != nil {
+			return err
+		}
 
-	resp, err := c.httpClient.Do(req)
-	if err != nil {
-		return err
+		reader = bytes.NewReader(b)
 	}
 
-	if resp.StatusCode != http.StatusOK {
-		return errors.New("something wen't wrong, todo: fix this message and what is returned")
+	req, _ := http.NewRequest(method, path, reader)
+	req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", c.token))
+	req.Header.Add("Content-Type", "application/json")
+
+	resp, err := c.httpClient.Do(req)
+
+	if err != nil {
+		return err
 	}
 
 	defer resp.Body.Close()
 
-	bytes, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return err
+	if resp.StatusCode > http.StatusCreated {
+		sBytes, _ := ioutil.ReadAll(resp.Body)
+		return errors.New(string(sBytes))
 	}
 
-	b := string(bytes)
-	fmt.Println(b)
+	if o != nil {
+		bytes, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			return err
+		}
 
-	return json.Unmarshal(bytes, o)
+		b := string(bytes)
+		fmt.Println(b)
+
+		return json.Unmarshal(bytes, o)
+	}
+
+	return nil
 }
 
 // BuildFieldsQuery returns the field query part of the url
