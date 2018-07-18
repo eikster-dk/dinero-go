@@ -172,15 +172,19 @@ func (c *Client) Call(method, path string, body interface{}, o interface{}) erro
 		return errors.New(string(sBytes))
 	}
 
-	bytes, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return err
+	if o != nil {
+		bytes, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			return err
+		}
+
+		b := string(bytes)
+		fmt.Println(b)
+
+		return json.Unmarshal(bytes, o)
 	}
 
-	b := string(bytes)
-	fmt.Println(b)
-
-	return json.Unmarshal(bytes, o)
+	return nil
 }
 
 // BuildFieldsQuery returns the field query part of the url

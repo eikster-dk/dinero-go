@@ -136,8 +136,8 @@ const (
 	CurrentMonthOut = "CurrentMonthNettoOut"
 )
 
-// CreateContactParams is the parameters you provide to create a contact in dinero's api
-type CreateContactParams struct {
+// ContactParams is the parameters you provide to create a contact in dinero's api
+type ContactParams struct {
 	ExternalReference            string `json:"externalReference,omitempty"`
 	Name                         string `json:"name,omitempty"`
 	Street                       string `json:"street,omitempty"`
@@ -152,7 +152,7 @@ type CreateContactParams struct {
 	EanNumber                    string `json:"eanNumber,omitempty"`
 	PaymentConditionType         string `json:"paymentConditionType,omitempty"`
 	PaymentConditionNumberOfDays int    `json:"paymentConditionNumberOfDays,omitempty"`
-	IsPerson                     bool   `json:"isPerson,omitempty"`
+	IsPerson                     bool   `json:"isPerson"`
 }
 
 // ContactCreated is the returned type when a contact is created successfully
@@ -161,7 +161,7 @@ type ContactCreated struct {
 }
 
 // Add a new contact to the organization
-func Add(api dinero.API, params CreateContactParams) (*ContactCreated, error) {
+func Add(api dinero.API, params ContactParams) (*ContactCreated, error) {
 	route := "v1/{organizationID}/contacts"
 
 	var created ContactCreated
@@ -173,7 +173,11 @@ func Add(api dinero.API, params CreateContactParams) (*ContactCreated, error) {
 }
 
 // Update an existing contact
-func Update() {}
+func Update(api dinero.API, id string, params ContactParams) error {
+	route := fmt.Sprintf("v1/{organizationID}/contacts/%v", id)
+
+	return api.Call(http.MethodPut, route, params, nil)
+}
 
 // Delete a contact from the given organization
 func Delete() {}

@@ -59,7 +59,7 @@ func TestAddPrivateContact_integration(t *testing.T) {
 	c := dinero.NewClient(key, secret)
 	c.Authorize(apiKey, organizationID)
 
-	params := CreateContactParams{
+	params := ContactParams{
 		Name:                         "Hello awesome",
 		ExternalReference:            "external",
 		AttPerson:                    "",
@@ -80,5 +80,28 @@ func TestAddPrivateContact_integration(t *testing.T) {
 
 	if err != nil {
 		t.Errorf("We can not create a contact: %v", err)
+	}
+}
+
+func TestUpdateContact_integration(t *testing.T) {
+	if testing.Short() {
+		t.Skip(dinerotest.IntegrationTestText)
+	}
+
+	key, secret, apiKey, organizationID := dinerotest.GetClientKeysForIntegrationTesting()
+
+	c := dinero.NewClient(key, secret)
+	c.Authorize(apiKey, organizationID)
+
+	id := "3e389a20-d206-4c4b-acff-3cff102db328"
+
+	params := ContactParams{
+		Name:       "testing awesome update",
+		CountryKey: "DK",
+		IsPerson:   false,
+	}
+
+	if err := Update(c, id, params); err != nil {
+		t.Errorf("We could not update a contact: %v", err)
 	}
 }
