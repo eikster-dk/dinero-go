@@ -17,7 +17,8 @@ import (
 )
 
 func main() {
-	clientKey, secret, organizationApiKey, organizationId := "testKey", "topSecretKeyHere", "apikey from user here", 1233321
+	clientKey, secret, := "testKey", "topSecretKeyHere"
+	organizationApiKey, organizationId := "apikey from user here", 1233321
 
 	c := dinero.NewClient(clientKey, secret)
 	c.Authorize(organizationApiKey, organizationId)
