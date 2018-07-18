@@ -105,3 +105,26 @@ func TestUpdateContact_integration(t *testing.T) {
 		t.Errorf("We could not update a contact: %v", err)
 	}
 }
+
+func TestDeleteAndRestoreContact_integration(t *testing.T) {
+	if testing.Short() {
+		t.Skip(dinerotest.IntegrationTestText)
+	}
+
+	key, secret, apiKey, organizationID := dinerotest.GetClientKeysForIntegrationTesting()
+
+	c := dinero.NewClient(key, secret)
+	c.Authorize(apiKey, organizationID)
+
+	id := "3617dafe-c066-450c-8cbc-8d082a9f3907"
+
+	if err := Delete(c, id); err != nil {
+		t.Errorf("We could not delete the contact correctly: %v", err)
+		t.Fail()
+	}
+
+	if err := Restore(c, id); err != nil {
+		t.Errorf("We could not restore the contact correctly: %v", err)
+		t.Fail()
+	}
+}
