@@ -43,7 +43,8 @@ func main() {
 
 	resp, err := contacts.Add(c, contactParams)
 	if err != nil {
-		// do something with the err, look at https://api.dinero.dk/docs/errorcodes for codes and why
+		// do something with the err, 
+		// look at https://api.dinero.dk/docs/errorcodes for codes and why
 	}
 
 	// do something with contact created resp
