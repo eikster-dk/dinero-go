@@ -180,4 +180,8 @@ func Update(api dinero.API, id string, params ContactParams) error {
 }
 
 // Delete a contact from the given organization
-func Delete() {}
+func Delete(api dinero.API, ID string) error {
+	route := fmt.Sprintf("v1/{organizationID}/contacts/%v", ID)
+
+	return api.Call(http.MethodDelete, route, nil, nil)
+}
