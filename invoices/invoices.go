@@ -1,5 +1,9 @@
 package invoices
 
+import (
+	"github.com/eikc/dinero-go"
+)
+
 // InvoiceLine represents a line in an invoice
 type InvoiceLine struct {
 	BaseAmountValue float64 `json:"baseAmountValue,omitempty"`
@@ -21,9 +25,33 @@ type TotalLine struct {
 	Label       string
 }
 
-// Get invoice as json or pdf. Define the Accept header of your request to either
-// 'application/json' or 'application/octet-stream'. PDF's can only be generated from booked invoices.
-func Get() {}
+// Invoice represents an invoice json object
+type Invoice struct {
+	PaymentDate                  string      `json:"paymentDate"`
+	PaymentStatus                string      `json:paymentStatus"`
+	PaymentConditionNumberOfDays int         `json:"paymentConditionNumberOfDays"`
+	PaymentConditionType         string      `json"paymentConditionType"`
+	Status                       string      `json:"status"`
+	ContactID                    string      `json:"contactGuid"`
+	ID                           string      `json:"guid"`
+	Timestamp                    string      `json:"timestamp"`
+	Created                      dinero.Time `json:"createdAt"`
+	UpdatedAt                    dinero.Time `json:"updatedAt"`
+	DeletedAt                    dinero.Time `json:"deletedAt"`
+	Number                       int         `json:"number"`
+	ContactName                  string      `json:"contactName"`
+	ShowLinesInclVat             bool        `json:"showLinesInclVat"`
+	TotalExclVat                 float64     `json:"totalExclVat"`
+	TotalVatableAmount           float64     `json:"totalVatableAmount"`
+	TotalInclVat                 float64     `json:"totalInclVat"`
+	TotalNonVatableAmount        float64     `json:"totalNonVatableAmount"`
+	TotalVat                     float64     `json:"totalVat"`
+	TotalLines                   []TotalLine `json:"totalLines"`
+	Currency                     string      `json:"currency"`
+	Language                     string      `json:"language"`
+	ExternalReference            string      `json:"externalReference"`
+	Description                  string      `json:"description"`
+}
 
 // Book books a given invoice
 func Book() {}
