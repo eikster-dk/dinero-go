@@ -10,6 +10,10 @@ import (
 	"github.com/eikc/dinero-go"
 )
 
+const (
+	timeFormat = "2006-01-02"
+)
+
 // ListParams are all the params that can be used to return a list of invoices
 type ListParams struct {
 	StartDate      *time.Time
@@ -80,8 +84,6 @@ type InvoiceList struct {
 	Collection []Invoice
 	Pagination dinero.PaginationResult
 }
-
-const timeFormat = "2006-01-02"
 
 // List receives a list of invoices for the organization.
 func List(api dinero.API, params ListParams) (*InvoiceList, error) {
