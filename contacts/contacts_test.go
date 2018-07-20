@@ -66,7 +66,7 @@ func TestAddPrivateContact_integration(t *testing.T) {
 		City:                         "city",
 		EanNumber:                    "",
 		Email:                        "test@test.dk",
-		PaymentConditionType:         Netto,
+		PaymentConditionType:         dinero.Netto,
 		Phone:                        "88 88 88 88",
 		Street:                       "street",
 		VatNumber:                    "",
