@@ -14,6 +14,49 @@ const (
 	timeFormat = "2006-01-02"
 )
 
+// const for ascending and descending sorting params
+const (
+	ASC  = "ascending"
+	DESC = "descending"
+)
+
+// Fields for what to be returned of properties on the list
+// if null, the list is defaulted to: ID,ContactName,Date,Description
+// Possible values are:
+const (
+	Number            = "Number"
+	ID                = "Guid"
+	ContactName       = "ContactName"
+	Date              = "Date"
+	PaymentDate       = "PaymentDate"
+	Description       = "Description"
+	Currency          = "Currency"
+	Status            = "Status"
+	MailOutStatus     = "MailOutStatus"
+	TotalExclVatInDKK = "TotalExclVatInDkk"
+	TotalInclVatInDKK = "TotalInclVatInDkk"
+	TotalExclVat      = "TotalExclVat"
+	TotalInclVat      = "TotalInclVat"
+	CreatedAt         = "CreatedAt"
+	UpdatedAt         = "UpdatedAt"
+	DeletedAt         = "DeletedAt"
+)
+
+// Status filter types
+const (
+	Draft    = "Draft"
+	Booked   = "Booked"
+	Paid     = "Paid"
+	OverPaid = "OverPaid"
+	Overdue  = "Overdue"
+)
+
+// Sort Options
+const (
+	VoucherNumber = "VoucherNumber"
+	VoucherDate   = "VoucherDate"
+)
+
 // ListParams are all the params that can be used to return a list of invoices
 type ListParams struct {
 	StartDate      *time.Time
