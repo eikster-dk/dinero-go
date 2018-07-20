@@ -64,7 +64,7 @@ type Time struct {
 const dineroLayout = "2006-01-02T15:04:05.999"
 
 // UnmarshalJSON is Helper function to parse the Timestamp from dinero
-func (dt *Time) UnmarshalJSON(b []byte) error {
+func (dt Time) UnmarshalJSON(b []byte) error {
 	s := strings.Trim(string(b), "\"")
 	if s == "null" {
 		dt.Time = time.Time{}
@@ -82,8 +82,25 @@ func (dt *Time) UnmarshalJSON(b []byte) error {
 }
 
 // MarshalJSON is Helper function to format a dinero timestamp
-func (dt *Time) MarshalJSON() ([]byte, error) {
+func (dt Time) MarshalJSON() ([]byte, error) {
 	return []byte(dt.Time.Format(dineroLayout)), nil
+}
+
+// Date is a representation of dinero´s wanted date format, YYYY-MM-DD
+type Date string
+
+const dineroDateFormat = "2006-01-02"
+
+// NewDate returns the date in correct format for dinero to accept
+func NewDate(year, month, day int) Date {
+	t := time.Date(year, time.Month(month), day, 0, 0, 0, 0, time.UTC)
+	return Date(t.Format(dineroDateFormat))
+}
+
+// DateNow returns the current date in UTC
+func DateNow() Date {
+	t := time.Now().UTC()
+	return Date(t.Format(dineroDateFormat))
 }
 
 // Authorize will authorize the client
@@ -148,6 +165,7 @@ func (c *Client) Call(method, path string, body interface{}, o interface{}) erro
 	var reader io.Reader
 	if body != nil {
 		b, err := json.Marshal(body)
+		fmt.Println(string(b))
 		if err != nil {
 			return err
 		}
