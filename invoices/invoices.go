@@ -53,9 +53,6 @@ type Invoice struct {
 	Description                  string      `json:"description"`
 }
 
-// Book books a given invoice
-func Book() {}
-
 // Send an email with link to a public version of the invoice where it can be printed or downloaded as a pdf.
 func Send() {}
 
