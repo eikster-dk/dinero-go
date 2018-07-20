@@ -28,9 +28,9 @@ type TotalLine struct {
 // Invoice represents an invoice json object
 type Invoice struct {
 	PaymentDate                  string      `json:"paymentDate"`
-	PaymentStatus                string      `json:paymentStatus"`
+	PaymentStatus                string      `json:"paymentStatus"`
 	PaymentConditionNumberOfDays int         `json:"paymentConditionNumberOfDays"`
-	PaymentConditionType         string      `json"paymentConditionType"`
+	PaymentConditionType         string      `json:"paymentConditionType"`
 	Status                       string      `json:"status"`
 	ContactID                    string      `json:"contactGuid"`
 	ID                           string      `json:"guid"`
@@ -89,6 +89,3 @@ func Save() {}
 
 // Delete invoice. The invoice cannot be deleted if booked.
 func Delete() {}
-
-// List receives a list of invoices for the organization.
-func List() {}
