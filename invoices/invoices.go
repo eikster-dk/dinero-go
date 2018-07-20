@@ -19,10 +19,10 @@ type InvoiceLine struct {
 
 // TotalLine represents a line total
 type TotalLine struct {
-	Type        string
-	TotalAmount float64
-	Position    int
-	Label       string
+	Type        string  `json:"type,omitempty"`
+	TotalAmount float64 `json:"totalAmount,omitempty"`
+	Position    int     `json:"position,omitempty"`
+	Label       string  `json:"label,omitempty"`
 }
 
 // Invoice represents an invoice json object
@@ -83,9 +83,6 @@ func GetPayments() {}
 
 // GenerateCreditNote generates and saves a credit note draft of a given booked invoice.
 func GenerateCreditNote() {}
-
-// Save saves an invoice as draft.
-func Save() {}
 
 // Delete invoice. The invoice cannot be deleted if booked.
 func Delete() {}
