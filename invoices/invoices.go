@@ -53,10 +53,6 @@ type Invoice struct {
 	Description                  string      `json:"description"`
 }
 
-// Update an existing invoice. The invoice cannot be updated if booked.
-// endpoint used is version: 1.2
-func Update() {}
-
 // CreatePayment creates a payment for an invoice. Payments can only be added to a booked invoice.
 func CreatePayment() {}
 
