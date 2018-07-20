@@ -25,16 +25,7 @@ type ListParams struct {
 	SortOrder      *string
 }
 
-// InvoiceList is the returned response from dinero when getting a list of invoices
-type InvoiceList struct {
-	Collection []Invoice
-	Pagination dinero.PaginationResult
-}
-
-const timeFormat = "2006-01-02"
-
-// List receives a list of invoices for the organization.
-func List(api dinero.API, params ListParams) (*InvoiceList, error) {
+func (params *ListParams) getQueryString() string {
 	query := url.Values{}
 	if params.StartDate != nil {
 		formatted := params.StartDate.Format(timeFormat)
@@ -81,8 +72,20 @@ func List(api dinero.API, params ListParams) (*InvoiceList, error) {
 		query.Add("sortOrder", *params.SortOrder)
 	}
 
-	encodedQuery := query.Encode()
-	route := fmt.Sprint("v1/{organizationID}/invoices?", encodedQuery)
+	return query.Encode()
+}
+
+// InvoiceList is the returned response from dinero when getting a list of invoices
+type InvoiceList struct {
+	Collection []Invoice
+	Pagination dinero.PaginationResult
+}
+
+const timeFormat = "2006-01-02"
+
+// List receives a list of invoices for the organization.
+func List(api dinero.API, params ListParams) (*InvoiceList, error) {
+	route := fmt.Sprint("v1/{organizationID}/invoices?", params.getQueryString())
 
 	var invoiceList InvoiceList
 	if err := api.Call(http.MethodGet, route, nil, &invoiceList); err != nil {
