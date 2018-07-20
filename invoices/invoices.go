@@ -53,18 +53,6 @@ type Invoice struct {
 	Description                  string      `json:"description"`
 }
 
-// Send an email with link to a public version of the invoice where it can be printed or downloaded as a pdf.
-func Send() {}
-
-// SendPreReminder sends a pre reminder email with link to a public version of the invoice where it
-// can be printed or downloaded as a pdf. The invoice needs to be overdue to send the reminder.
-// A pre-reminder is a mail reminding the customer, that the invoice is overdue.
-// This will not cause a reminder to be created in Dinero, this is only a mailout.
-func SendPreReminder() {}
-
-// SendEInvoice sends an e-invoice to an EAN customer
-func SendEInvoice() {}
-
 // Update an existing invoice. The invoice cannot be updated if booked.
 // endpoint used is version: 1.2
 func Update() {}
