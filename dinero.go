@@ -61,7 +61,7 @@ type Time struct {
 	time.Time
 }
 
-const dineroLayout = "2006-01-02T15:04:05.000"
+const dineroLayout = "2006-01-02T15:04:05.999"
 
 // UnmarshalJSON is Helper function to parse the Timestamp from dinero
 func (dt *Time) UnmarshalJSON(b []byte) error {
