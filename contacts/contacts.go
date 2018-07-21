@@ -132,13 +132,6 @@ func Get(c dinero.API, ID string) (*Contact, error) {
 	return &contact, nil
 }
 
-// Payment terms
-const (
-	Netto           = "Netto"
-	NettoCash       = "NettoCash"
-	CurrentMonthOut = "CurrentMonthNettoOut"
-)
-
 // ContactParams is the parameters you provide to create a contact in dinero's api
 type ContactParams struct {
 	ExternalReference            string `json:"externalReference,omitempty"`

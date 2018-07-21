@@ -12,7 +12,6 @@ import (
 	"net/url"
 	"strconv"
 	"strings"
-	"time"
 )
 
 const (
@@ -55,35 +54,11 @@ type PaginationResult struct {
 	Page                int
 }
 
-// Time is a wrapper for time to make sure the
-// JSON returned from dinero is correctly parsed
-type Time struct {
-	time.Time
-}
-
-const dineroLayout = "2006-01-02T15:04:05.000"
-
-// UnmarshalJSON is Helper function to parse the Timestamp from dinero
-func (dt *Time) UnmarshalJSON(b []byte) error {
-	s := strings.Trim(string(b), "\"")
-	if s == "null" {
-		dt.Time = time.Time{}
-		return nil
-	}
-
-	t, err := time.Parse(dineroLayout, s)
-	if err != nil {
-		return err
-	}
-
-	dt.Time = t
-
-	return nil
-}
-
-// MarshalJSON is Helper function to format a dinero timestamp
-func (dt *Time) MarshalJSON() ([]byte, error) {
-	return []byte(dt.Time.Format(dineroLayout)), nil
+// TimestampResponse is a generic response that is used to return the ID and timestamp from dinero
+// whenever a succesful action has occured
+type TimestampResponse struct {
+	ID        string `json:"guid,omitempty"`
+	Timestamp string `json:"timestamp,omitempty"`
 }
 
 // Authorize will authorize the client
@@ -177,9 +152,6 @@ func (c *Client) Call(method, path string, body interface{}, o interface{}) erro
 		if err != nil {
 			return err
 		}
-
-		b := string(bytes)
-		fmt.Println(b)
 
 		return json.Unmarshal(bytes, o)
 	}
