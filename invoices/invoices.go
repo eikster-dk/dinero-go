@@ -52,6 +52,3 @@ type Invoice struct {
 	ExternalReference            string      `json:"externalReference"`
 	Description                  string      `json:"description"`
 }
-
-// Delete invoice. The invoice cannot be deleted if booked.
-func Delete() {}
