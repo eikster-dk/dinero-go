@@ -53,8 +53,5 @@ type Invoice struct {
 	Description                  string      `json:"description"`
 }
 
-// GenerateCreditNote generates and saves a credit note draft of a given booked invoice.
-func GenerateCreditNote() {}
-
 // Delete invoice. The invoice cannot be deleted if booked.
 func Delete() {}
