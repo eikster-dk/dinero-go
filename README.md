@@ -1,6 +1,7 @@
 # dinero-go
 The unofficial Golang SDK for Dinero Regnskab (dinero.dk)
 
+[![GoDoc](https://godoc.org/github.com/Eikc/dinero-go?status.svg)](https://godoc.org/github.com/Eikc/dinero-go)
 
 # How to use
 The SDK should be fairly easy to use, all it requires are a client key and client secret that you can get from https://api.dinero.dk/apply
