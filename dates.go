@@ -16,9 +16,6 @@ type Time struct {
 	time.Time
 }
 
-// Date is a representation of dinero´s wanted date format, YYYY-MM-DD
-type Date string
-
 // UnmarshalJSON is Helper function to parse the Timestamp from dinero
 func (dt Time) UnmarshalJSON(b []byte) error {
 	s := strings.Trim(string(b), "\"")
@@ -41,6 +38,9 @@ func (dt Time) UnmarshalJSON(b []byte) error {
 func (dt Time) MarshalJSON() ([]byte, error) {
 	return []byte(dt.Time.Format(dineroLayout)), nil
 }
+
+// Date is a representation of dinero´s wanted date format, YYYY-MM-DD
+type Date string
 
 // NewDate returns the date in correct format for dinero to accept
 func NewDate(year, month, day int) Date {

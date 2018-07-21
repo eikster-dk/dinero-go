@@ -21,17 +21,11 @@ type CreateInvoice struct {
 	Address           string        `json:"address,omitempty"`
 }
 
-// InvoiceCreated returns the response from dinero when a invoice is created successfully
-type InvoiceCreated struct {
-	ID        string `json:"Guid"`
-	Timestamp string `json:"timeStamp"`
-}
-
 // Save saves an invoice as draft.
-func Save(api dinero.API, params CreateInvoice) (*InvoiceCreated, error) {
+func Save(api dinero.API, params CreateInvoice) (*dinero.TimestampResponse, error) {
 	route := "v1/{organizationID}/invoices"
 
-	var invoiceCreated InvoiceCreated
+	var invoiceCreated dinero.TimestampResponse
 	if err := api.Call(http.MethodPost, route, &params, &invoiceCreated); err != nil {
 		return nil, err
 	}

@@ -123,7 +123,6 @@ func (c *Client) Call(method, path string, body interface{}, o interface{}) erro
 	var reader io.Reader
 	if body != nil {
 		b, err := json.Marshal(body)
-		fmt.Println(string(b))
 		if err != nil {
 			return err
 		}
@@ -153,9 +152,6 @@ func (c *Client) Call(method, path string, body interface{}, o interface{}) erro
 		if err != nil {
 			return err
 		}
-
-		b := string(bytes)
-		fmt.Println(b)
 
 		return json.Unmarshal(bytes, o)
 	}

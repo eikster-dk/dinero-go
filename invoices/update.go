@@ -23,18 +23,12 @@ type UpdateInvoice struct {
 	Address           string        `json:"address,omitempty"`
 }
 
-// InvoiceUpdated is the result of the updated invoice with a new timestamp
-type InvoiceUpdated struct {
-	ID        string `json:"guid"`
-	Timestamp string `json:"timestamp"`
-}
-
 // Update an existing invoice. The invoice cannot be updated if booked.
 // endpoint used is version: 1.2
-func Update(api dinero.API, id string, params UpdateInvoice) (*InvoiceUpdated, error) {
+func Update(api dinero.API, id string, params UpdateInvoice) (*dinero.TimestampResponse, error) {
 	route := fmt.Sprint("v1.2/{organizationID}/invoices/", id)
 
-	var invoiceUpdated InvoiceUpdated
+	var invoiceUpdated dinero.TimestampResponse
 	if err := api.Call(http.MethodPut, route, &params, &invoiceUpdated); err != nil {
 		return nil, err
 	}
