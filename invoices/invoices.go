@@ -1,3 +1,4 @@
+// Package invoices include all the functionality to do CRUD operations on invoices in dinero regnskab
 package invoices
 
 import (
