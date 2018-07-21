@@ -53,15 +53,6 @@ type Invoice struct {
 	Description                  string      `json:"description"`
 }
 
-// CreatePayment creates a payment for an invoice. Payments can only be added to a booked invoice.
-func CreatePayment() {}
-
-// DeletePayment deletes a payment from an invoice. Only booked invoices can have payments.
-func DeletePayment() {}
-
-// GetPayments gets the payments for an invoice
-func GetPayments() {}
-
 // GenerateCreditNote generates and saves a credit note draft of a given booked invoice.
 func GenerateCreditNote() {}
 
