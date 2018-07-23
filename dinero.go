@@ -173,15 +173,29 @@ func BuildFieldsQuery(fieldQuery ...string) string {
 	return query
 }
 
-// NewClient prepares a struct that will be used to communicate with
+// New prepares a struct that will be used to communicate with
 // Dinero's api
-func NewClient(clientKey string, clientSecret string) *Client {
+func New(clientKey string, clientSecret string) *Client {
 	c := Client{
 		clientKey:    clientKey,
 		clientSecret: clientSecret,
 		userAgent:    "dinero-go",
 		baseURL:      defaultAPIEndpoint,
 		httpClient:   &http.Client{},
+	}
+
+	return &c
+}
+
+// NewClient prepares a struct that will be used to communicate with
+// Dinero's api
+func NewClient(clientKey string, clientSecret string, httpClient *http.Client) *Client {
+	c := Client{
+		clientKey:    clientKey,
+		clientSecret: clientSecret,
+		userAgent:    "dinero-go",
+		baseURL:      defaultAPIEndpoint,
+		httpClient:   httpClient,
 	}
 
 	return &c
