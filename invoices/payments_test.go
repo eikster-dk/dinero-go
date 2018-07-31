@@ -3,8 +3,9 @@ package invoices
 import (
 	"testing"
 
-	dinero "github.com/eikc/dinero-go"
-	"github.com/eikc/dinero-go/dinerotest"
+	"github.com/eikc/dinero-go"
+	"github.com/eikc/dinero-go/internal"
+	"github.com/eikc/dinero-go/internal/dinerotest"
 )
 
 func TestCreatePaymentOnInvoice_integration(t *testing.T) {
@@ -12,10 +13,7 @@ func TestCreatePaymentOnInvoice_integration(t *testing.T) {
 		t.Skip(dinerotest.IntegrationTestText)
 	}
 
-	key, secret, apiKey, organizationID := dinerotest.GetClientKeysForIntegrationTesting()
-
-	c := dinero.NewClient(key, secret)
-	c.Authorize(apiKey, organizationID)
+	c := internal.GetClient()
 
 	invoiceID := "f25ed5df-3fb4-49b5-98ce-31711238fc10"
 	invoice, err := Get(c, invoiceID)
@@ -42,10 +40,7 @@ func TestGetAllPaymentsOnInvoice_integration(t *testing.T) {
 		t.Skip(dinerotest.IntegrationTestText)
 	}
 
-	key, secret, apiKey, organizationID := dinerotest.GetClientKeysForIntegrationTesting()
-
-	c := dinero.NewClient(key, secret)
-	c.Authorize(apiKey, organizationID)
+	c := internal.GetClient()
 
 	invoiceID := "f25ed5df-3fb4-49b5-98ce-31711238fc10"
 	if _, err := GetPayments(c, invoiceID); err != nil {
@@ -58,10 +53,7 @@ func TestDeletePaymentOnInvoice_integration(t *testing.T) {
 		t.Skip(dinerotest.IntegrationTestText)
 	}
 
-	key, secret, apiKey, organizationID := dinerotest.GetClientKeysForIntegrationTesting()
-
-	c := dinero.NewClient(key, secret)
-	c.Authorize(apiKey, organizationID)
+	c := internal.GetClient()
 
 	invoiceID := "f25ed5df-3fb4-49b5-98ce-31711238fc10"
 	invoice, err := Get(c, invoiceID)

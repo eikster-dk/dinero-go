@@ -3,8 +3,8 @@ package accounts
 import (
 	"testing"
 
-	"github.com/eikc/dinero-go"
-	"github.com/eikc/dinero-go/dinerotest"
+	"github.com/eikc/dinero-go/internal"
+	"github.com/eikc/dinero-go/internal/dinerotest"
 )
 
 func Test_getRouteWithFields(t *testing.T) {
@@ -51,10 +51,7 @@ func TestGetDeposits_integration(t *testing.T) {
 		t.Skip(dinerotest.IntegrationTestText)
 	}
 
-	key, secret, apiKey, organizationID := dinerotest.GetClientKeysForIntegrationTesting()
-
-	c := dinero.NewClient(key, secret)
-	c.Authorize(apiKey, organizationID)
+	c := internal.GetClient()
 
 	_, err := GetDeposits(c)
 	if err != nil {
@@ -69,10 +66,7 @@ func TestGetDeposits_OnlyReturnNumberField_integration(t *testing.T) {
 		t.Skip(dinerotest.IntegrationTestText)
 	}
 
-	key, secret, apiKey, organizationID := dinerotest.GetClientKeysForIntegrationTesting()
-
-	c := dinero.NewClient(key, secret)
-	c.Authorize(apiKey, organizationID)
+	c := internal.GetClient()
 
 	deposits, err := GetDeposits(c, Number)
 	if err != nil {
@@ -95,10 +89,7 @@ func TestGetAccounts_integration(t *testing.T) {
 		t.Skip(dinerotest.IntegrationTestText)
 	}
 
-	key, secret, apiKey, organizationID := dinerotest.GetClientKeysForIntegrationTesting()
-
-	c := dinero.NewClient(key, secret)
-	c.Authorize(apiKey, organizationID)
+	c := internal.GetClient()
 
 	_, err := GetAccounts(c)
 	if err != nil {
@@ -113,10 +104,7 @@ func TestGetAccountsWithOnlyName_Integration(t *testing.T) {
 		t.Skip(dinerotest.IntegrationTestText)
 	}
 
-	key, secret, apiKey, organizationID := dinerotest.GetClientKeysForIntegrationTesting()
-
-	c := dinero.NewClient(key, secret)
-	c.Authorize(apiKey, organizationID)
+	c := internal.GetClient()
 
 	accounts, err := GetAccounts(c, Name)
 	if err != nil {

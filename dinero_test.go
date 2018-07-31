@@ -3,7 +3,7 @@ package dinero
 import (
 	"testing"
 
-	"github.com/eikc/dinero-go/dinerotest"
+	"github.com/eikc/dinero-go/internal/dinerotest"
 )
 
 func TestClient_Call(t *testing.T) {
@@ -16,7 +16,7 @@ func TestClient_Authorize_integration(t *testing.T) {
 
 	key, secret, apiKey, organizationID := dinerotest.GetClientKeysForIntegrationTesting()
 
-	c := NewClient(key, secret)
+	c := New(key, secret)
 
 	err := c.Authorize(apiKey, organizationID)
 	if err != nil {
@@ -56,7 +56,7 @@ func TestNewClient(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			c := NewClient(tt.args.clientKey, tt.args.clientSecret)
+			c := New(tt.args.clientKey, tt.args.clientSecret)
 			if c.clientKey != tt.want.clientKey &&
 				c.clientSecret != tt.want.clientSecret &&
 				c.userAgent != tt.want.userAgent {

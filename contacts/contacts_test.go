@@ -4,8 +4,8 @@ import (
 	"testing"
 
 	"github.com/eikc/dinero-go"
-
-	"github.com/eikc/dinero-go/dinerotest"
+	"github.com/eikc/dinero-go/internal"
+	"github.com/eikc/dinero-go/internal/dinerotest"
 )
 
 func TestListContacts_integration(t *testing.T) {
@@ -13,10 +13,7 @@ func TestListContacts_integration(t *testing.T) {
 		t.Skip(dinerotest.IntegrationTestText)
 	}
 
-	key, secret, apiKey, organizationID := dinerotest.GetClientKeysForIntegrationTesting()
-
-	c := dinero.NewClient(key, secret)
-	c.Authorize(apiKey, organizationID)
+	c := internal.GetClient()
 
 	params := ListParams{
 
@@ -36,10 +33,7 @@ func TestGetContact_integration(t *testing.T) {
 		t.Skip(dinerotest.IntegrationTestText)
 	}
 
-	key, secret, apiKey, organizationID := dinerotest.GetClientKeysForIntegrationTesting()
-
-	c := dinero.NewClient(key, secret)
-	c.Authorize(apiKey, organizationID)
+	c := internal.GetClient()
 
 	id := "3e389a20-d206-4c4b-acff-3cff102db328"
 
@@ -54,10 +48,7 @@ func TestAddPrivateContact_integration(t *testing.T) {
 		t.Skip(dinerotest.IntegrationTestText)
 	}
 
-	key, secret, apiKey, organizationID := dinerotest.GetClientKeysForIntegrationTesting()
-
-	c := dinero.NewClient(key, secret)
-	c.Authorize(apiKey, organizationID)
+	c := internal.GetClient()
 
 	params := ContactParams{
 		Name:                         "Hello awesome",
@@ -88,10 +79,7 @@ func TestUpdateContact_integration(t *testing.T) {
 		t.Skip(dinerotest.IntegrationTestText)
 	}
 
-	key, secret, apiKey, organizationID := dinerotest.GetClientKeysForIntegrationTesting()
-
-	c := dinero.NewClient(key, secret)
-	c.Authorize(apiKey, organizationID)
+	c := internal.GetClient()
 
 	id := "3e389a20-d206-4c4b-acff-3cff102db328"
 
@@ -111,10 +99,7 @@ func TestDeleteAndRestoreContact_integration(t *testing.T) {
 		t.Skip(dinerotest.IntegrationTestText)
 	}
 
-	key, secret, apiKey, organizationID := dinerotest.GetClientKeysForIntegrationTesting()
-
-	c := dinero.NewClient(key, secret)
-	c.Authorize(apiKey, organizationID)
+	c := internal.GetClient()
 
 	id := "3617dafe-c066-450c-8cbc-8d082a9f3907"
 

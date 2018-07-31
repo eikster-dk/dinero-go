@@ -3,9 +3,8 @@ package accountingYears
 import (
 	"testing"
 
-	"github.com/eikc/dinero-go/dinerotest"
-
-	"github.com/eikc/dinero-go"
+	"github.com/eikc/dinero-go/internal"
+	"github.com/eikc/dinero-go/internal/dinerotest"
 )
 
 func TestAccountingYear_GET_integration(t *testing.T) {
@@ -13,10 +12,7 @@ func TestAccountingYear_GET_integration(t *testing.T) {
 		t.Skip(dinerotest.IntegrationTestText)
 	}
 
-	key, secret, apiKey, organizationID := dinerotest.GetClientKeysForIntegrationTesting()
-
-	c := dinero.NewClient(key, secret)
-	c.Authorize(apiKey, organizationID)
+	c := internal.GetClient()
 
 	_, err := Get(c)
 	if err != nil {

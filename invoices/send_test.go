@@ -3,8 +3,8 @@ package invoices
 import (
 	"testing"
 
-	dinero "github.com/eikc/dinero-go"
-	"github.com/eikc/dinero-go/dinerotest"
+	"github.com/eikc/dinero-go/internal"
+	"github.com/eikc/dinero-go/internal/dinerotest"
 )
 
 func TestSendingInvoiceAsEmail_integration(t *testing.T) {
@@ -12,10 +12,7 @@ func TestSendingInvoiceAsEmail_integration(t *testing.T) {
 		t.Skip(dinerotest.IntegrationTestText)
 	}
 
-	key, secret, apiKey, organizationID := dinerotest.GetClientKeysForIntegrationTesting()
-
-	c := dinero.NewClient(key, secret)
-	c.Authorize(apiKey, organizationID)
+	c := internal.GetClient()
 
 	invoiceID := "961532ac-be75-4d97-afeb-74ed724334dc"
 	emailParams := SendInvoice{
@@ -29,16 +26,11 @@ func TestSendingInvoiceAsEmail_integration(t *testing.T) {
 }
 
 func TestSendingPreReminder_integration(t *testing.T) {
-	t.Skip("Skipped since we have no invoice in correct state to be tested on")
-
 	if testing.Short() {
 		t.Skip(dinerotest.IntegrationTestText)
 	}
 
-	key, secret, apiKey, organizationID := dinerotest.GetClientKeysForIntegrationTesting()
-
-	c := dinero.NewClient(key, secret)
-	c.Authorize(apiKey, organizationID)
+	c := internal.GetClient()
 
 	invoiceID := "961532ac-be75-4d97-afeb-74ed724334dc"
 	emailParams := SendInvoice{

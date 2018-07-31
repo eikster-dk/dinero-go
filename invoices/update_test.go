@@ -4,7 +4,8 @@ import (
 	"testing"
 
 	dinero "github.com/eikc/dinero-go"
-	"github.com/eikc/dinero-go/dinerotest"
+	"github.com/eikc/dinero-go/internal"
+	"github.com/eikc/dinero-go/internal/dinerotest"
 )
 
 func TestUpdateInvoice_integration(t *testing.T) {
@@ -12,10 +13,7 @@ func TestUpdateInvoice_integration(t *testing.T) {
 		t.Skip(dinerotest.IntegrationTestText)
 	}
 
-	key, secret, apiKey, organizationID := dinerotest.GetClientKeysForIntegrationTesting()
-
-	c := dinero.NewClient(key, secret)
-	c.Authorize(apiKey, organizationID)
+	c := internal.GetClient()
 
 	id := "0869dd82-7cac-445a-b5db-1fa2037054f4"
 	invoice, err := Get(c, id)
