@@ -3,8 +3,8 @@ package invoices
 import (
 	"testing"
 
-	dinero "github.com/eikc/dinero-go"
-	"github.com/eikc/dinero-go/dinerotest"
+	"github.com/eikc/dinero-go/internal"
+	"github.com/eikc/dinero-go/internal/dinerotest"
 )
 
 func TestInvoicesList_integration(t *testing.T) {
@@ -12,10 +12,7 @@ func TestInvoicesList_integration(t *testing.T) {
 		t.Skip(dinerotest.IntegrationTestText)
 	}
 
-	key, secret, apiKey, organizationID := dinerotest.GetClientKeysForIntegrationTesting()
-
-	c := dinero.NewClient(key, secret)
-	c.Authorize(apiKey, organizationID)
+	c := internal.GetClient()
 
 	var params ListParams
 	if _, err := List(c, params); err != nil {
