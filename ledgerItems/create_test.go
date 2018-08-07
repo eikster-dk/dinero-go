@@ -1,4 +1,4 @@
-package ledgerItems
+package ledgeritems
 
 import (
 	"testing"
