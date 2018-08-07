@@ -37,9 +37,13 @@ func TestCreateLedgerItems(t *testing.T) {
 			VoucherDate:             dinero.DateNow(),
 		},
 	}
-	_, err := Create(c, ledgerItems)
+	items, err := Create(c, ledgerItems)
 	if err != nil {
-
 		t.Errorf("error creating ledger items: %v", err)
+	}
+
+	err = Delete(c, items)
+	if err != nil {
+		t.Fatal("Could not clean up test: ", err)
 	}
 }
