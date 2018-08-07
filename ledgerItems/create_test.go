@@ -37,6 +37,7 @@ func TestCreateLedgerItems(t *testing.T) {
 			VoucherDate:             dinero.DateNow(),
 		},
 	}
+
 	items, err := Create(c, ledgerItems)
 	if err != nil {
 		t.Errorf("error creating ledger items: %v", err)
