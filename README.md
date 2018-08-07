@@ -31,7 +31,7 @@ func main() {
 		City:                         "city",
 		EanNumber:                    "",
 		Email:                        "test@test.dk",
-		PaymentConditionType:         contacts.NettoCash,
+		PaymentConditionType:         dinero.NettoCash,
 		Phone:                        "88 88 88 88",
 		Street:                       "street",
 		VatNumber:                    "",
