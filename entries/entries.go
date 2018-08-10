@@ -8,6 +8,7 @@ import (
 	dinero "github.com/eikc/dinero-go"
 )
 
+// Entry are the data type returned from the api
 type Entry struct {
 	AccountNumber int         `json:"accountNumber,omitempty"`
 	AccountName   string      `json:"accountName,omitempty"`
@@ -21,12 +22,14 @@ type Entry struct {
 	EntryGUID     string      `json:"entryGuid,omitempty"`
 }
 
+// GetRequestParams are the paramters needed to get entries from dinero
 type GetRequestParams struct {
 	FromDate     dinero.Date
 	ToDate       dinero.Date
 	IncludePrimo bool
 }
 
+// Get returns a list of entries
 func Get(api dinero.API, params GetRequestParams) ([]Entry, error) {
 	query := url.Values{}
 	query.Add("fromDate", string(params.FromDate))
@@ -42,5 +45,4 @@ func Get(api dinero.API, params GetRequestParams) ([]Entry, error) {
 	}
 
 	return entries, nil
-
 }
