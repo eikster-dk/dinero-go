@@ -21,8 +21,12 @@ type Deposit struct {
 
 // Account represents an account in dinero regnskab
 type Account struct {
-	Number int    `json:"AccountName"`
-	Name   string `json:"Name"`
+	Number                int    `json:"AccountName"`
+	Name                  string `json:"Name"`
+	VatCode               string `json:"vatCode,omitempty"`
+	Category              string `json:"category,omitempty"`
+	IsHidden              bool   `json:"isHidden,omitempty"`
+	IsDefaultSalesAccount bool   `json:"isDefaultSalesAccount,omitempty"`
 }
 
 // GetAccounts Gets the list of entry accounts for the organization
