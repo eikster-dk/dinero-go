@@ -16,6 +16,7 @@ type CreateInvoice struct {
 	ExternalReference string        `json:"externalReference,omitempty"`
 	Description       string        `json:"description,omitempty"`
 	Comment           string        `json:"comment,omitempty"`
+	InvoiceTemplateId string        `json:"invoiceTemplateId,omitempty"`
 	Date              dinero.Date   `json:"date,omitempty"`
 	ProductLines      []InvoiceLine `json:"productLines,omitempty"`
 	Address           string        `json:"address,omitempty"`
